@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Idris Karel SEUNDA EKWE — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold:      #b8922a;
+      --gold-dim:  #d4aa55;
+      --gold-bg:   rgba(184,146,42,.08);
+      --font-serif:'Cormorant Garamond', Georgia, serif;
+      --font-mono: 'DM Mono', 'Courier New', monospace;
+      --ease:      cubic-bezier(.16,1,.3,1);
+      --section-gap: 110px;
+    }
+    [data-theme="light"] {
+      --bg:      #faf8f4; --bg2: #f2ede4; --surface: #ffffff;
+      --border:  #ddd8ce; --text: #1a1612; --muted:   #7a6f5e;
+      --shadow:  rgba(0,0,0,.08); --nav-bg: rgba(250,248,244,.88);
+    }
+    [data-theme="dark"] {
+      --bg:      #0a0908; --bg2: #111009; --surface: #161410;
+      --border:  #2a2620; --text: #ede8de; --muted:   #7a6f5e;
+      --shadow:  rgba(0,0,0,.4); --nav-bg: rgba(10,9,8,.88);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--font-serif);font-size:18px;line-height:1.7;overflow-x:hidden;transition:background .35s,color .35s;}
+    a{color:var(--gold);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:150px;}
+
+    .container{max-width:1100px;margin:0 auto;padding:0 48px;}
+    section{padding:var(--section-gap) 0;border-top:1px solid var(--border);}
+
+    .label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:48px;display:flex;align-items:center;gap:16px;}
+    .label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--gold-dim),transparent);opacity:.4;}
+
+    h1,h2,h3{font-family:var(--font-serif);font-weight:300;line-height:1.08;}
+    h2{font-size:clamp(2.4rem,5vw,3.8rem);margin-bottom:28px;}
+    h3{font-size:1.3rem;font-weight:400;margin-bottom:8px;}
+    em{font-style:italic;color:var(--gold);}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(16px);background:var(--nav-bg);border-bottom:1px solid var(--border);transition:background .35s,border-color .35s;}
+    .nav-logo{font-family:var(--font-serif);font-size:1.05rem;font-style:italic;color:var(--gold);letter-spacing:.06em;}
+    .nav-right{display:flex;align-items:center;gap:40px;}
+    .nav-links{display:flex;gap:28px;list-style:none;font-family:var(--font-mono);font-size:.67rem;letter-spacing:.14em;text-transform:uppercase;}
+    .nav-links a{color:var(--muted);transition:color .2s;}
+    .nav-links a:hover{color:var(--text);text-decoration:none;}
+    .toggle-wrap{display:flex;align-items:center;gap:8px;cursor:pointer;}
+    .toggle-label{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;user-select:none;}
+    .theme-toggle{width:44px;height:24px;background:var(--border);border:1px solid var(--border);border-radius:999px;cursor:pointer;position:relative;transition:background .3s;flex-shrink:0;}
+    .theme-toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--gold);transition:transform .3s var(--ease);}
+    [data-theme="dark"] .theme-toggle::after{transform:translateX(20px);}
+
+    /* BTN */
+    .btn{display:inline-block;padding:13px 30px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);transition:background .2s,color .2s;cursor:pointer;background:transparent;}
+    .btn:hover{background:var(--gold);color:var(--bg);text-decoration:none;}
+    .btn.ghost{border-color:var(--border);color:var(--muted);}
+    .btn.ghost:hover{background:var(--border);color:var(--text);}
+
+    /* HERO */
+    #hero{min-height:100vh;display:flex;align-items:center;padding:140px 0 80px;border-top:none;background:var(--bg);position:relative;overflow:hidden;}
+    #hero::before{content:'';position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:680px;height:680px;border-radius:50%;border:1px solid var(--border);opacity:.45;pointer-events:none;}
+    .hero-inner{display:grid;grid-template-columns:1fr 400px;gap:80px;align-items:center;}
+    .hero-eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.24em;color:var(--gold);text-transform:uppercase;margin-bottom:20px;animation:fadeUp .8s var(--ease) both;}
+    .hero-name{font-size:clamp(3rem,8vw,7rem);font-weight:300;line-height:.92;letter-spacing:-.02em;margin-bottom:24px;animation:fadeUp .9s .08s var(--ease) both;}
+    .hero-tagline{font-size:clamp(.95rem,2vw,1.15rem);color:var(--muted);font-style:italic;max-width:480px;margin-bottom:44px;animation:fadeUp .9s .16s var(--ease) both;}
+    .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .9s .24s var(--ease) both;}
+    .hero-socials{display:flex;gap:10px;margin-top:32px;flex-wrap:wrap;animation:fadeUp .9s .32s var(--ease) both;}
+    .social-chip{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border:1px solid var(--border);color:var(--muted);transition:border-color .2s,color .2s;}
+    .social-chip:hover{border-color:var(--gold);color:var(--gold);text-decoration:none;}
+
+    .hero-photo-wrap{position:relative;animation:fadeUp 1s .2s var(--ease) both;}
+    .hero-photo-card{position:relative;border:1px solid var(--border);overflow:hidden;aspect-ratio:3/4;background:var(--surface);box-shadow:18px 18px 0 var(--bg2),18px 18px 0 1px var(--border);transition:box-shadow .3s var(--ease),transform .3s var(--ease);}
+    .hero-photo-card:hover{transform:translate(-4px,-4px);box-shadow:22px 22px 0 var(--bg2),22px 22px 0 1px var(--border);}
+    .hero-photo-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(15%);transition:filter .4s,transform .5s var(--ease);}
+    .hero-photo-card:hover img{filter:grayscale(0%);transform:scale(1.03);}
+    .photo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted);font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;background:var(--bg2);}
+    .photo-placeholder span{font-size:2.2rem;opacity:.35;}
+    .hero-photo-badge{position:absolute;bottom:-14px;left:-14px;background:var(--gold);color:var(--bg);padding:10px 18px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;}
+
+    /* ABOUT */
+    .about-grid{display:grid;grid-template-columns:280px 1fr;gap:72px;align-items:start;}
+    .about-photo-wrap{position:relative;}
+    .about-photo-card{border:1px solid var(--border);overflow:hidden;aspect-ratio:3/4;background:var(--surface);}
+    .about-photo-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter .4s;}
+    .about-photo-card:hover img{filter:grayscale(0%);}
+    .about-accent{position:absolute;top:16px;right:-14px;width:1px;height:55%;background:linear-gradient(to bottom,var(--gold),transparent);opacity:.35;}
+    .about-text p{color:var(--muted);margin-bottom:18px;font-size:1.02rem;}
+    .about-text p:first-of-type{color:var(--text);font-size:1.15rem;}
+    .about-info{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;margin:24px 0;font-family:var(--font-mono);font-size:.75rem;}
+    .about-info-item{display:flex;flex-direction:column;gap:2px;}
+    .about-info-item span:first-child{color:var(--gold);letter-spacing:.1em;font-size:.65rem;}
+    .about-info-item span:last-child{color:var(--text);}
+
+    /* EDUCATION */
+    .edu-list{display:flex;flex-direction:column;gap:0;}
+    .edu-item{display:grid;grid-template-columns:140px 1fr;gap:32px;padding:32px 0;border-bottom:1px solid var(--border);}
+    .edu-year{font-family:var(--font-mono);font-size:.7rem;color:var(--gold);letter-spacing:.08em;padding-top:4px;}
+    .edu-degree{font-size:1.15rem;font-weight:400;margin-bottom:4px;}
+    .edu-school{color:var(--muted);font-size:.9rem;font-style:italic;margin-bottom:4px;}
+    .edu-note{font-family:var(--font-mono);font-size:.68rem;color:var(--gold-dim);letter-spacing:.08em;}
+
+    /* EXPERIENCE */
+    .exp-list{display:flex;flex-direction:column;gap:0;}
+    .exp-item{display:grid;grid-template-columns:140px 1fr;gap:32px;padding:32px 0;border-bottom:1px solid var(--border);}
+    .exp-year{font-family:var(--font-mono);font-size:.7rem;color:var(--gold);letter-spacing:.08em;padding-top:4px;}
+    .exp-role{font-size:1.15rem;font-weight:400;margin-bottom:4px;}
+    .exp-org{color:var(--muted);font-size:.9rem;font-style:italic;margin-bottom:8px;}
+    .exp-desc{color:var(--muted);font-size:.9rem;line-height:1.6;}
+
+    /* SKILLS */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);}
+    .skill-card{background:var(--bg);padding:30px;transition:background .2s;}
+    .skill-card:hover{background:var(--surface);}
+    .skill-icon{font-size:1.5rem;margin-bottom:10px;}
+    .skill-card h3{font-size:.95rem;font-weight:500;margin-bottom:6px;}
+    .skill-card p{font-size:.82rem;color:var(--muted);line-height:1.55;}
+    .skill-bar{margin-top:14px;height:2px;background:var(--border);position:relative;}
+    .skill-bar-fill{position:absolute;left:0;top:0;height:100%;background:var(--gold);width:0;transition:width 1.2s var(--ease);}
+
+    /* PROJECTS */
+    .project-item{display:grid;grid-template-columns:60px 1fr auto;gap:32px;align-items:start;padding:36px 0;border-bottom:1px solid var(--border);transition:padding-left .2s var(--ease);}
+    .project-item:hover{padding-left:6px;}
+    .project-num{font-family:var(--font-mono);font-size:.68rem;color:var(--gold);opacity:.5;padding-top:5px;}
+    .project-title{font-size:1.4rem;font-weight:300;margin-bottom:8px;}
+    .project-desc{color:var(--muted);font-size:.93rem;margin-bottom:14px;}
+    .project-tags{display:flex;flex-wrap:wrap;gap:8px;}
+    .tag{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--border);color:var(--muted);text-transform:uppercase;}
+    .project-link{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;padding-top:6px;white-space:nowrap;}
+
+    /* RESEARCH */
+    .research-list{display:flex;flex-direction:column;gap:24px;}
+    .research-item{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;padding:28px 32px;background:var(--surface);border-left:3px solid var(--gold);border-bottom:1px solid var(--border);transition:border-left-width .2s;}
+    .research-item:hover{border-left-width:6px;}
+    .research-year{font-family:var(--font-mono);font-size:.67rem;color:var(--gold);margin-bottom:6px;letter-spacing:.1em;}
+    .research-title{font-size:1.1rem;margin-bottom:6px;}
+    .research-venue{color:var(--muted);font-size:.88rem;font-style:italic;}
+    .research-doi{font-family:var(--font-mono);font-size:.7rem;color:var(--gold);margin-top:8px;}
+    .research-badge{font-family:var(--font-mono);font-size:.62rem;padding:6px 12px;background:var(--gold-bg);border:1px solid var(--gold-dim);color:var(--gold);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;}
+
+    /* AWARDS */
+    .awards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px;}
+    .award-card{padding:28px;border:1px solid var(--border);background:var(--surface);position:relative;overflow:hidden;transition:border-color .2s,transform .2s var(--ease);}
+    .award-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+    .award-card:hover{border-color:var(--gold-dim);transform:translateY(-3px);}
+    .award-emoji{font-size:1.6rem;margin-bottom:14px;}
+    .award-card h3{font-size:.95rem;margin-bottom:4px;}
+    .award-org{font-family:var(--font-mono);font-size:.65rem;color:var(--gold);letter-spacing:.1em;margin-bottom:10px;}
+    .award-desc{color:var(--muted);font-size:.82rem;}
+
+    /* CV */
+    #cv{text-align:center;}
+    #cv p{color:var(--muted);max-width:460px;margin:0 auto 40px;}
+    .cv-box{display:inline-flex;flex-direction:column;align-items:center;gap:28px;padding:56px 72px;border:1px solid var(--border);background:var(--surface);min-width:280px;}
+    .cv-icon{font-size:2.8rem;}
+    .cv-meta{font-family:var(--font-mono);font-size:.67rem;color:var(--muted);letter-spacing:.1em;}
+
+    /* CONTACT */
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+    .contact-info p{color:var(--muted);margin-bottom:32px;}
+    .contact-links{display:flex;flex-direction:column;gap:14px;}
+    .contact-link-item{display:flex;gap:16px;font-family:var(--font-mono);font-size:.78rem;color:var(--muted);}
+    .contact-link-item span:first-child{color:var(--gold);letter-spacing:.1em;width:80px;flex-shrink:0;}
+    form{display:flex;flex-direction:column;gap:14px;}
+    .form-group{display:flex;flex-direction:column;gap:5px;}
+    label{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+    input,textarea{background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--font-serif);font-size:1rem;padding:12px 14px;outline:none;resize:vertical;transition:border-color .2s,background .35s;}
+    input:focus,textarea:focus{border-color:var(--gold);}
+    textarea{min-height:130px;}
+
+    /* COMMUNITY */
+    .community-card{padding:36px;border:1px solid var(--border);background:var(--surface);border-left:4px solid var(--gold);}
+    .community-card h3{font-size:1.2rem;margin-bottom:6px;}
+    .community-card .role-meta{font-family:var(--font-mono);font-size:.7rem;color:var(--gold);letter-spacing:.1em;margin-bottom:16px;}
+    .community-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .community-card ul li{color:var(--muted);font-size:.92rem;padding-left:16px;position:relative;}
+    .community-card ul li::before{content:'—';position:absolute;left:0;color:var(--gold-dim);}
+
+    /* FOOTER */
+    footer{padding:36px 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:.67rem;color:var(--muted);letter-spacing:.1em;}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+    .reveal.visible{opacity:1;transform:none;}
+
+    /* RESPONSIVE */
+    @media(max-width:860px){
+      nav{padding:16px 24px;}
+      .nav-links{display:none;}
+      .container{padding:0 24px;}
+      .hero-inner{grid-template-columns:1fr;gap:48px;}
+      .hero-photo-wrap{max-width:260px;}
+      .about-grid{grid-template-columns:1fr;gap:40px;}
+      .about-photo-card{aspect-ratio:4/3;}
+      .edu-item,.exp-item{grid-template-columns:1fr;gap:8px;}
+      .edu-year,.exp-year{padding-top:0;}
+      .project-item{grid-template-columns:1fr;}
+      .project-num{display:none;}
+      .research-item{grid-template-columns:1fr;}
+      .contact-grid{grid-template-columns:1fr;gap:48px;}
+      footer{flex-direction:column;gap:6px;text-align:center;}
+      .about-info{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Idris K. Seunda</div>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#awards">Awards</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="toggle-wrap" onclick="toggleTheme()" title="Switch dark / light mode">
+        <span class="toggle-label" id="toggle-label">Light</span>
+        <div class="theme-toggle" id="themeToggle"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div>
+          <p class="hero-eyebrow">Portfolio — 2026</p>
+          <h1 class="hero-name">Idris Karel<br><em>Seunda Ekwe</em></h1>
+          <p class="hero-tagline">
+            Data Scientist · Transport Planner · Financial Mathematics · Researcher<br>
+            Applying advanced machine learning and mathematical modeling to solve complex challenges in quantitative finance and sustainable urban infrastructure.
+          </p>
+          <div class="hero-ctas">
+            <a href="#projects" class="btn">View My Work</a>
+            <a href="#contact" class="btn ghost">Get in Touch</a>
+          </div>
+          <div class="hero-socials">
+            <a href="https://linkedin.com/in/idris-karel-seunda-ekwe" class="social-chip" target="_blank">LinkedIn</a>
+            <a href="https://github.com/idrisseunda" class="social-chip" target="_blank">GitHub</a>
+            <a href="mailto:idris.seunda@aims-cameroon.org" class="social-chip">Email</a>
+          </div>
+        </div>
+        <div class="hero-photo-wrap">
+          <div class="hero-photo-card">
+            <!-- ✏️ Replace with: <img src="photo.jpg" alt="Idris Karel Seunda Ekwe" /> -->
+            <img src="Idris Karel SEUNDA EKWE.JPG" alt="Idris Karel Seunda Ekwe" />
+          </div>
+          <div class="hero-photo-badge">AIMS · UYI · Transport Planner</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <p class="label">About Me</p>
+      <div class="about-grid reveal">
+        <div class="about-photo-wrap">
+          <div class="about-photo-card">
+            <!-- ✏️ Replace with: <img src="photo.jpg" alt="Idris Karel Seunda Ekwe" /> -->
+            <img src="portfolio.png" alt="Idris Karel Seunda Ekwe" />
+          </div>
+          <div class="about-accent"></div>
+        </div>
+        <div class="about-text">
+          <h2>Hello, I'm<br><em>Idris Karel</em></h2>
+          <p>Proactive and analytical Researcher and Transport Planner with a strong foundation in Applied Mathematics and Data Science. Passionate about leveraging Deep Learning to solve complex challenges in Quantitative Finance, Healthcare, and Intelligent Transportation Systems.</p>
+          <p>Adaptable team player with a proven track record in designing road safety frameworks and developing data-driven mobile solutions. Committed to high-impact research that bridges theoretical modeling with practical, sustainable urban infrastructure.</p>
+          <div class="about-info">
+            <div class="about-info-item"><span>Location</span><span>Limbe, Cameroon</span></div>
+            <div class="about-info-item"><span>Phone</span><span>+237 697 693 906</span></div>
+            <div class="about-info-item"><span>Email</span><span>idris.seunda@aims-cameroon.org</span></div>
+            <div class="about-info-item"><span>Languages</span><span>French (Native) · English (Professional)</span></div>
+          </div>
+          <a href="#contact" class="btn" style="margin-top:8px;">Let's Talk</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="container">
+      <p class="label">Education</p>
+      <h2 class="reveal">Academic <em>Background</em></h2>
+      <div class="edu-list">
+        <div class="edu-item reveal">
+          <div class="edu-year">2025 – Present</div>
+          <div>
+            <p class="edu-degree">Master in Data Science</p>
+            <p class="edu-school">African Institute of Mathematical Sciences (AIMS-Cameroon), Limbe</p>
+            <p class="edu-note">Cooperative Master Program · Ongoing</p>
+          </div>
+        </div>
+        <div class="edu-item reveal">
+          <div class="edu-year">2022 – Present</div>
+          <div>
+            <p class="edu-degree">Master in Mathematics &amp; Fundamental Applications</p>
+            <p class="edu-school">University of Yaoundé I, Yaoundé, Cameroon</p>
+            <p class="edu-note">Specialization: Probability · Statistics · Finance · Ongoing</p>
+          </div>
+        </div>
+        <div class="edu-item reveal">
+          <div class="edu-year">2022 – 2025</div>
+          <div>
+            <p class="edu-degree">Master in Transport Planning</p>
+            <p class="edu-school">National Advanced School of Public Works · Université Libre de Bruxelles · University of Padova · University of Roma Sapienza</p>
+          </div>
+        </div>
+        <div class="edu-item reveal">
+          <div class="edu-year">2018 – 2021</div>
+          <div>
+            <p class="edu-degree">Bachelor's Degree, Mathematics &amp; Fundamental Applications</p>
+            <p class="edu-school">University of Yaoundé I, Yaoundé, Cameroon</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="container">
+      <p class="label">Experience</p>
+      <h2 class="reveal">Professional <em>Journey</em></h2>
+      <div class="exp-list">
+        <div class="exp-item reveal">
+          <div class="exp-year">2024 – 2025</div>
+          <div>
+            <p class="exp-role">Junior Transport Planner</p>
+            <p class="exp-org">CESR SARL, Yaoundé, Cameroon</p>
+            <p class="exp-desc">Designed the methodology for global safety missions, analyzed collected data, and consolidated results for final study reports.</p>
+          </div>
+        </div>
+        <div class="exp-item reveal">
+          <div class="exp-year">2024 – 2025</div>
+          <div>
+            <p class="exp-role">Road Safety Mobility Instructor</p>
+            <p class="exp-org">Youth for Safe and Inclusive Mobility (YOURS), Yaoundé, Cameroon</p>
+            <p class="exp-desc">Provided training tailored to the specific needs, roles, and rights of young women and people with disabilities, empowering them to raise awareness and advocate effectively for road safety.</p>
+          </div>
+        </div>
+        <div class="exp-item reveal">
+          <div class="exp-year">2023</div>
+          <div>
+            <p class="exp-role">Academic Intern — Transport Planner</p>
+            <p class="exp-org">Sub-directorate of Maritime Freight Management, Littoral Customs Sector 1, Cameroon</p>
+            <p class="exp-desc">Gained practical knowledge of customs protocols for the importation, exportation, and transit of goods. Assisted with shipping documentation and regulatory requirements for international product movement.</p>
+          </div>
+        </div>
+        <div class="exp-item reveal">
+          <div class="exp-year">2018 – 2023</div>
+          <div>
+            <p class="exp-role">Private Tutor in Mathematics</p>
+            <p class="exp-org">Secondary, High School &amp; University Level, Yaoundé, Cameroon</p>
+            <p class="exp-desc">Provided tutoring in mathematics covering secondary and undergraduate-level topics.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container">
+      <p class="label">Skills &amp; Expertise</p>
+      <div class="skills-grid reveal">
+        <div class="skill-card"><div class="skill-icon">🐍</div><h3>Data Science & Programming</h3><p>Python, R, SPSS, SageMath, MATLAB, PostgreSQL</p><div class="skill-bar"><div class="skill-bar-fill" data-w="88"></div></div></div>
+        <div class="skill-card"><div class="skill-icon">🚦</div><h3>Transport & Specialized Tools</h3><p>AnyLogistix PLE, Tranus, Konsult, EU Roadmaps, KoboToolbox</p><div class="skill-bar"><div class="skill-bar-fill" data-w="85"></div></div></div>
+        <div class="skill-card"><div class="skill-icon">🧠</div><h3>Deep Learning & AI</h3><p>Neural networks, quantitative modeling, intelligent transport systems</p><div class="skill-bar"><div class="skill-bar-fill" data-w="75"></div></div></div>
+        <div class="skill-card"><div class="skill-icon">📊</div><h3>Data Analysis & Statistics</h3><p>Statistical modeling, probability, finance, research design</p><div class="skill-bar"><div class="skill-bar-fill" data-w="90"></div></div></div>
+        <div class="skill-card"><div class="skill-icon">🗂️</div><h3>Office & Project Management</h3><p>MS Office (Word, Excel, PPT), MS Project</p><div class="skill-bar"><div class="skill-bar-fill" data-w="92"></div></div></div>
+        <div class="skill-card"><div class="skill-icon">🌐</div><h3>Web & Mobile Development</h3><p>Mobile apps, web applications, data-driven solutions</p><div class="skill-bar"><div class="skill-bar-fill" data-w="70"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container">
+      <p class="label">Projects &amp; Work</p>
+      <h2 class="reveal">Selected <em>Projects</em></h2>
+
+      <div class="project-item reveal">
+        <div class="project-num">01</div>
+        <div>
+          <h3 class="project-title">HolaRide — Ride Sharing Mobile App</h3>
+          <p class="project-desc">Development of a mobile application for ride sharing in Cameroon, linking passengers to private car owners and professional drivers. Winner of the AIMS Innovation Week 2026 Hackathon.</p>
+          <div class="project-tags"><span class="tag">Mobile App</span><span class="tag">Transport</span><span class="tag">Cameroon</span><span class="tag">2026</span></div>
+        </div>
+        <span class="project-link">Hackathon Winner 🏆</span>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-num">02</div>
+        <div>
+          <h3 class="project-title">Personal Finance Tracker Web App</h3>
+          <p class="project-desc">Development of a web application to help young students and professionals manage their income, track expenses, and monitor savings efficiently.</p>
+          <div class="project-tags"><span class="tag">Web App</span><span class="tag">FinTech</span><span class="tag">JavaScript</span><span class="tag">2025–2026</span></div>
+        </div>
+        <a href="#" class="project-link">View →</a>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-num">03</div>
+        <div>
+          <h3 class="project-title">Mobilité Verte Yaoundé — Road Safety Audit</h3>
+          <p class="project-desc">Designed and implemented comprehensive global road safety audit frameworks for Yaoundé city center. Analyzed complex traffic and accident data to identify high-risk zones and authored final strategic reports with actionable infrastructure recommendations.</p>
+          <div class="project-tags"><span class="tag">Road Safety</span><span class="tag">Data Analysis</span><span class="tag">Urban Planning</span><span class="tag">2024–2025</span></div>
+        </div>
+        <a href="#" class="project-link">View →</a>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-num">04</div>
+        <div>
+          <h3 class="project-title">YOURS Local Action — Inclusive Mobility Study</h3>
+          <p class="project-desc">Conducted a study on the assessment of accessibility and inclusivity in road infrastructure and transportation services in Yaoundé. Led road safety training for young women and persons with disabilities, and participated in road safety awareness campaigns.</p>
+          <div class="project-tags"><span class="tag">Inclusion</span><span class="tag">Mobility</span><span class="tag">Research</span><span class="tag">2024–2025</span></div>
+        </div>
+        <a href="#" class="project-link">View →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section id="research">
+    <div class="container">
+      <p class="label">Research &amp; Publications</p>
+      <h2 class="reveal">Academic <em>Contributions</em></h2>
+      <div class="research-list">
+        <div class="research-item reveal">
+          <div>
+            <p class="research-year">November 2024</p>
+            <h3 class="research-title">Assessment of Public Transportation Safety Measures in Yaoundé, Cameroon: Case of Collective Taxis</h3>
+            <p class="research-venue">MDPI, Future Transportation — Vol. 4, Issue 4, pp. 1402–1429</p>
+            <p class="research-doi"><a href="https://doi.org/10.3390/futuretransp4040068" target="_blank">doi.org/10.3390/futuretransp4040068</a></p>
+          </div>
+          <span class="research-badge">Published</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AWARDS -->
+  <section id="awards">
+    <div class="container">
+      <p class="label">Awards, Scholarships &amp; Certificates</p>
+      <h2 class="reveal">Recognition &amp; <em>Credentials</em></h2>
+      <div class="awards-grid">
+        <div class="award-card reveal">
+          <div class="award-emoji">🏆</div>
+          <h3>AIMS Innovation Week Hackathon Winner</h3>
+          <p class="award-org">AIMS CAMEROON — 2026</p>
+          <p class="award-desc">Awarded by the Knowledge and Technology Transfer department at AIMS Cameroon for the HolaRide mobile app project.</p>
+        </div>
+        <div class="award-card reveal">
+          <div class="award-emoji">🎓</div>
+          <h3>AIMS Mastercard Foundation Scholar</h3>
+          <p class="award-org">MASTERCARD FOUNDATION — 2026</p>
+          <p class="award-desc">Prestigious scholarship awarded to high-achieving students demonstrating academic excellence, leadership, and commitment to community transformation.</p>
+        </div>
+        <div class="award-card reveal">
+          <div class="award-emoji">🌍</div>
+          <h3>AIMS Full Scholarship — Data Science</h3>
+          <p class="award-org">AFRICAN INSTITUTE FOR MATHEMATICAL SCIENCES — 2025</p>
+          <p class="award-desc">Full scholarship for the AIMS Master's Cooperative Program in Data Science, Cameroon.</p>
+        </div>
+        <div class="award-card reveal">
+          <div class="award-emoji">📜</div>
+          <h3>MOOC — Mobilités Urbaines en Afrique</h3>
+          <p class="award-org">CAMPUS GROUPE AFD · CODATU · UNIVERSITÉ SENGHOR — 2024</p>
+          <p class="award-desc">Certified training on urban mobility challenges and solutions in the African context.</p>
+        </div>
+        <div class="award-card reveal">
+          <div class="award-emoji">📋</div>
+          <h3>Monitoring &amp; Evaluation of Development Projects</h3>
+          <p class="award-org">CAMPUS GROUPE AFD — 2024</p>
+          <p class="award-desc">Professional certification in monitoring, evaluation, and impact assessment of development projects.</p>
+        </div>
+        <div class="award-card reveal">
+          <div class="award-emoji">♿</div>
+          <h3>Audit of Inclusion in Transport Services &amp; Infrastructure</h3>
+          <p class="award-org">YOUTH FOR ROAD SAFETY (YOURS) — 2024</p>
+          <p class="award-desc">Specialized certification in auditing transport infrastructure for accessibility and inclusivity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section id="community">
+    <div class="container">
+      <p class="label">Community Impact</p>
+      <h2 class="reveal">Giveback &amp; <em>Leadership</em></h2>
+      <div class="community-card reveal">
+        <h3>President — OCOD (One Child One Dream)</h3>
+        <p class="role-meta">NON-PROFIT ASSOCIATION · 2022 – PRESENT · YAOUNDÉ, CAMEROON</p>
+        <ul>
+          <li>Lead a non-profit dedicated to the educational, health, and professional development of orphaned children.</li>
+          <li>Organize bi-annual fundraising campaigns to support an average of three orphanages in the Yaoundé region.</li>
+          <li>Facilitate training sessions and mentorship programs to support the social and professional growth of beneficiaries.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CV -->
+  <section id="cv">
+    <div class="container">
+      <p class="label">Curriculum Vitæ</p>
+      <h2>Download <em>My CV</em></h2>
+      <p>Full overview of my education, experience, research, and skills in one document.</p>
+      <div class="cv-box reveal">
+        <div class="cv-icon">📄</div>
+        <div>
+          <p style="font-size:1.05rem;margin-bottom:6px;">Idris_Seunda_CV_2026.pdf</p>
+          <p class="cv-meta">PDF · Updated February 2026</p>
+        </div>
+        <!-- ✏️ Replace href with the actual path to your CV PDF -->
+        <a href="Idris_Seunda_cv_feb_2026(update_1)-2.pdf" download class="btn">Download CV</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <p class="label">Get in Touch</p>
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <h2>Let's <em>Connect</em></h2>
+          <p>Whether you have a research opportunity, a project collaboration, or just want to say hello — my inbox is always open.</p>
+          <div class="contact-links">
+            <div class="contact-link-item"><span>Email</span><span><a href="mailto:idris.seunda@aims-cameroon.org">idris.seunda@aims-cameroon.org</a></span></div>
+            <div class="contact-link-item"><span>Phone</span><span><a href="tel:+237697693906">+237 697 693 906</a></span></div>
+            <div class="contact-link-item"><span>LinkedIn</span><span><a href="https://linkedin.com/in/idris-karel-seunda-ekwe" target="_blank">Idris Karel SEUNDA EKWE</a></span></div>
+            <div class="contact-link-item"><span>GitHub</span><span><a href="https://github.com/idrisseunda" target="_blank">github.com/idrisseunda</a></span></div>
+            <div class="contact-link-item"><span>Location</span><span>Limbe, Cameroon</span></div>
+          </div>
+        </div>
+        <form class="reveal" onsubmit="handleSubmit(event)">
+          <div class="form-group"><label for="fname">Your Name</label><input type="text" id="fname" placeholder="Jane Smith" required/></div>
+          <div class="form-group"><label for="femail">Email Address</label><input type="email" id="femail" placeholder="jane@example.com" required/></div>
+          <div class="form-group"><label for="fsubject">Subject</label><input type="text" id="fsubject" placeholder="Research collaboration"/></div>
+          <div class="form-group"><label for="fmessage">Message</label><textarea id="fmessage" placeholder="Tell me about your project or inquiry…" required></textarea></div>
+          <button type="submit" class="btn" style="align-self:flex-start">Send Message</button>
+          <p id="form-feedback" style="font-family:var(--font-mono);font-size:.72rem;color:var(--gold);display:none;margin-top:6px;">✓ Message sent! I'll be in touch soon.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="container">
+    <span>© 2026 Idris Karel SEUNDA EKWE. All rights reserved.</span>
+    <span>Limbe, Cameroon · Data Science · Transport Planning</span>
+  </footer>
+
+  <script>
+    const html = document.documentElement;
+    function applyTheme(t) {
+      html.setAttribute('data-theme', t);
+      document.getElementById('toggle-label').textContent = t === 'dark' ? 'Dark' : 'Light';
+      localStorage.setItem('theme', t);
+    }
+    function toggleTheme() {
+      applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    }
+    applyTheme(localStorage.getItem('theme') || 'light');
+
+    const ro = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.transitionDelay = (i * 0.055) + 's';
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    const bo = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting)
+          e.target.querySelectorAll('.skill-bar-fill').forEach(b => b.style.width = b.dataset.w + '%');
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.skills-grid').forEach(el => bo.observe(el));
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const n = document.getElementById('fname').value;
+      const em = document.getElementById('femail').value;
+      const s = document.getElementById('fsubject').value;
+      const m = document.getElementById('fmessage').value;
+      window.location.href = `mailto:idris.seunda@aims-cameroon.org?subject=${encodeURIComponent(s||'Portfolio Contact')}&body=${encodeURIComponent('From: '+n+' <'+em+'>\n\n'+m)}`;
+      document.getElementById('form-feedback').style.display = 'block';
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>
